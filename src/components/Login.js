@@ -10,8 +10,37 @@ function Login({ setLoggedIn, setUserName }) {
 
     const handleLogin = useCallback(() => {
         setError('');
-        // Your login logic here
-    }, []);
+
+        fetch('/credentials.txt')
+            .then(response => response.text())
+            .then(text => {
+                const users = text.split('---').map(user => {
+                    const lines = user.trim().split('\n');
+                    const credentials = {};
+                    lines.forEach(line => {
+                        const [key, value] = line.split('=');
+                        credentials[key.trim()] = value.trim();
+                    });
+                    return credentials;
+                });
+
+                const validUser = users.find(user => user.username === username && user.password === password);
+
+                if (validUser) {
+                    setUserName(username);
+                    setLoggedIn(true);
+                } else {
+                    setError('Invalid credentials. Please try again.');
+                    setTimeout(() => {
+                        setError('');
+                    }, 5000);
+                }
+            })
+            .catch(err => {
+                console.error('Error loading credentials:', err);
+                setError('Failed to load credentials. Please try again later.');
+            });
+    }, [username, password, setUserName, setLoggedIn]);
 
     const handleKeyDown = useCallback((event) => {
         if (event.key === 'Enter') {
@@ -24,7 +53,7 @@ function Login({ setLoggedIn, setUserName }) {
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
         };
-    }, [handleKeyDown]); // Ensure handleKeyDown is included as a dependency
+    }, [handleKeyDown]);
 
     return (
         <div className="login-container">
