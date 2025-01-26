@@ -19,7 +19,7 @@ function Login({ setLoggedIn, setUserName }) {
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
         };
-    }, [username, password]);
+    }, [username, password, handleLogin]); // Include handleLogin as a dependency
 
     const handleLogin = () => {
         setError('');
