@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './Login.css';
 
 function Login({ setLoggedIn, setUserName }) {
@@ -13,11 +13,11 @@ function Login({ setLoggedIn, setUserName }) {
         // Your login logic here
     };
 
-    const handleKeyDown = (event) => {
+    const handleKeyDown = useCallback((event) => {
         if (event.key === 'Enter') {
             handleLogin();
         }
-    };
+    }, [handleLogin]);
 
     useEffect(() => {
         document.addEventListener('keydown', handleKeyDown);
