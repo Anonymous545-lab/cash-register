@@ -9,27 +9,7 @@ function CashRegister({ userName }) {
     const [animationMessage, setAnimationMessage] = useState('');
     const [animationType, setAnimationType] = useState('');
 
-    useEffect(() => {
-        const savedTransactions = JSON.parse(localStorage.getItem('transactions')) || [];
-        setTransactions(savedTransactions);
-        setTotal(savedTransactions.reduce((acc, txn) => {
-            return txn.type === 'add' ? acc + txn.amount : acc - txn.amount;
-        }, 0));
-    }, []);
-
-    useEffect(() => {
-        const handleKeyDown = (event) => {
-            if (event.key === 'Enter') {
-                addAmount();
-            }
-        };
-
-        document.addEventListener('keydown', handleKeyDown);
-        return () => {
-            document.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [amount, addAmount]); // Include addAmount as a dependency
-
+    // Function Definitions before useEffect
     const addAmount = () => {
         if (amount !== 0) {
             updateTransactions({ amount: parseFloat(amount), type: 'add', user: userName, date: new Date().toISOString() });
@@ -68,6 +48,27 @@ function CashRegister({ userName }) {
             setAnimationType('');
         }, 3000); // Animation duration
     };
+
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            if (event.key === 'Enter') {
+                addAmount();
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [amount, addAmount]); // Include addAmount as a dependency
+
+    useEffect(() => {
+        const savedTransactions = JSON.parse(localStorage.getItem('transactions')) || [];
+        setTransactions(savedTransactions);
+        setTotal(savedTransactions.reduce((acc, txn) => {
+            return txn.type === 'add' ? acc + txn.amount : acc - txn.amount;
+        }, 0));
+    }, []);
 
     return (
         <div className="cash-register">
