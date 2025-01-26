@@ -1,7 +1,7 @@
 import React from 'react';
 import './TransactionLogs.css';
 
-const TransactionLogs = ({ transactions, userName }) => {
+const TransactionLogs = ({ transactions }) => {
     return (
         <div className="transaction-logs">
             <div className="logs-display">
@@ -15,7 +15,7 @@ const TransactionLogs = ({ transactions, userName }) => {
                             </div>
                             <div className="log-info">
                                 <span className="log-date">{new Date(log.date).toLocaleString()}</span> by
-                                <span className="log-user">{log.user || userName}</span>
+                                <span className="log-user">{log.user}</span>
                             </div>
                         </li>
                     ))}
