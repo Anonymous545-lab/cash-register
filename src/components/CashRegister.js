@@ -1,36 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import './CashRegister.css';
 
 const CashRegister = ({ userName }) => {
     const [amount, setAmount] = useState(0);
     const [inputAmount, setInputAmount] = useState(0);
+    const [message, setMessage] = useState('');
 
     const handleInputChange = (event) => {
         setInputAmount(Number(event.target.value));
     };
 
-    const addAmount = () => {
-        setAmount((prevAmount) => prevAmount + inputAmount);
-        setInputAmount(0); // Reset input field after adding
-    };
+    const addAmount = useCallback((value) => {
+        setAmount((prevAmount) => prevAmount + value);
+        setMessage('Thank you!');
+        setTimeout(() => setMessage(''), 2000); // Clear message after 2 seconds
+    }, []);
 
-    const deductAmount = () => {
-        setAmount((prevAmount) => prevAmount - inputAmount);
-        setInputAmount(0); // Reset input field after deducting
-    };
+    const deductAmount = useCallback((value) => {
+        setAmount((prevAmount) => prevAmount - value);
+        setMessage("I'm watching you!");
+        setTimeout(() => setMessage(''), 2000); // Clear message after 2 seconds
+    }, []);
 
     return (
-        <div>
-            <h1>Cash Register</h1>
-            <p>Welcome, {userName}</p>
-            <input
-                type="number"
-                value={inputAmount}
-                onChange={handleInputChange}
-                placeholder="Enter amount"
-            />
-            <button onClick={addAmount}>Add Amount</button>
-            <button onClick={deductAmount}>Deduct Amount</button>
-            <p>Total: ${amount}</p>
+        <div className="cash-register">
+            <div className="display">
+                <h1>Cash Register</h1>
+                <p>Welcome, {userName}</p>
+                <input
+                    type="number"
+                    value={inputAmount}
+                    onChange={handleInputChange}
+                    placeholder="Enter amount"
+                />
+                <div className="buttons">
+                    <button onClick={() => addAmount(inputAmount)}>Add Amount</button>
+                    <button onClick={() => deductAmount(inputAmount)}>Deduct Amount</button>
+                </div>
+                <p>Total: ${amount}</p>
+                {message && <p className="animation-message">{message}</p>}
+            </div>
         </div>
     );
 };
