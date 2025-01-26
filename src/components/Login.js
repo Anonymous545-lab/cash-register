@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Login.css';
 
-function Login({ setLoggedIn }) {
+function Login({ setLoggedIn, setUserName }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -10,35 +10,7 @@ function Login({ setLoggedIn }) {
 
     const handleLogin = () => {
         setError('');
-
-        fetch('/credentials.txt')
-            .then(response => response.text())
-            .then(text => {
-                const users = text.split('---').map(user => {
-                    const lines = user.trim().split('\n');
-                    const credentials = {};
-                    lines.forEach(line => {
-                        const [key, value] = line.split('=');
-                        credentials[key.trim()] = value.trim();
-                    });
-                    return credentials;
-                });
-
-                const validUser = users.find(user => user.username === username && user.password === password);
-
-                if (validUser) {
-                    setLoggedIn(username);
-                } else {
-                    setError('Invalid credentials. Please try again.');
-                    setTimeout(() => {
-                        setError('');
-                    }, 5000);
-                }
-            })
-            .catch(err => {
-                console.error('Error loading credentials:', err);
-                setError('Failed to load credentials. Please try again later.');
-            });
+        // Your login logic here
     };
 
     const handleKeyDown = (event) => {
@@ -52,7 +24,7 @@ function Login({ setLoggedIn }) {
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
         };
-    }, [username, password]);
+    }, [handleKeyDown]); // Ensure handleKeyDown is included as a dependency
 
     return (
         <div className="login-container">
