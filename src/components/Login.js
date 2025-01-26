@@ -10,6 +10,7 @@ function Login({ setLoggedIn, setUserName }) {
 
     const handleLogin = useCallback(() => {
         setError('');
+        console.log("Attempting login with:", { username, password });
 
         fetch('/credentials.txt')
             .then(response => response.text())
@@ -27,9 +28,11 @@ function Login({ setLoggedIn, setUserName }) {
                 const validUser = users.find(user => user.username === username && user.password === password);
 
                 if (validUser) {
+                    console.log("Login successful!");
                     setUserName(username);
                     setLoggedIn(true);
                 } else {
+                    console.log("Invalid credentials.");
                     setError('Invalid credentials. Please try again.');
                     setTimeout(() => {
                         setError('');
@@ -40,7 +43,7 @@ function Login({ setLoggedIn, setUserName }) {
                 console.error('Error loading credentials:', err);
                 setError('Failed to load credentials. Please try again later.');
             });
-    }, [username, password, setUserName, setLoggedIn]);
+    }, [username, password, setLoggedIn, setUserName]);
 
     const handleKeyDown = useCallback((event) => {
         if (event.key === 'Enter') {
