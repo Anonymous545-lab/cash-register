@@ -15,7 +15,7 @@ function Login({ setLoggedIn, setUserName }) {
             .then(response => response.text())
             .then(text => {
                 const users = text.split('---').map(user => {
-                    const lines = user.trim().split('\n');
+                    const lines are user.trim().split('\n');
                     const credentials = {};
                     lines.forEach(line => {
                         const [key, value] = line.split('=');
