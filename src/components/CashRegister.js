@@ -1,103 +1,25 @@
-import React, { useState, useEffect, useRef } from 'react';
-import './CashRegister.css';
+import React, { useState, useEffect } from 'react';
 
-function CashRegister({ userName }) {
+const CashRegister = ({ userName }) => {
     const [amount, setAmount] = useState(0);
-    const [total, setTotal] = useState(0);
-    const [transactions, setTransactions] = useState([]);
-    const inputRef = useRef(null);
-    const [animationMessage, setAnimationMessage] = useState('');
-    const [animationType, setAnimationType] = useState('');
 
-    const addAmount = () => {
-        if (amount !== 0) {
-            updateTransactions({ amount: parseFloat(amount), type: 'add', user: userName, date: new Date().toISOString() });
-            inputRef.current.value = '';
-            triggerAnimation('You are such a star!', 'add');
-        }
-    };
-
-    const deductAmount = () => {
-        if (amount !== 0) {
-            updateTransactions({ amount: parseFloat(amount), type: 'deduct', user: userName, date: new Date().toISOString() });
-            inputRef.current.value = '';
-            triggerAnimation('I am watching you!', 'deduct');
-        }
-    };
-
-    const updateTransactions = (transaction) => {
-        const newTransactions = [...transactions, transaction];
-        setTransactions(newTransactions);
-        localStorage.setItem('transactions', JSON.stringify(newTransactions));
-        setTotal(transaction.type === 'add' ? total + transaction.amount : total - transaction.amount);
-    };
-
-    const handleAmountChange = (event) => {
-        const value = event.target.value;
-        if (!isNaN(value)) {
-            setAmount(value);
-        }
-    };
-
-    const triggerAnimation = (message, type) => {
-        setAnimationMessage(message);
-        setAnimationType(type);
-        setTimeout(() => {
-            setAnimationMessage('');
-            setAnimationType('');
-        }, 3000);
+    const addAmount = (value) => {
+        setAmount(amount + value);
     };
 
     useEffect(() => {
-        const handleKeyDown = (event) => {
-            if (event.key === 'Enter') {
-                addAmount();
-            }
-        };
-
-        document.addEventListener('keydown', handleKeyDown);
-        return () => {
-            document.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [amount, userName]);
-
-    useEffect(() => {
-        const savedTransactions = JSON.parse(localStorage.getItem('transactions')) || [];
-        setTransactions(savedTransactions);
-        setTotal(savedTransactions.reduce((acc, txn) => {
-            return txn.type === 'add' ? acc + txn.amount : acc - txn.amount;
-        }, 0));
-    }, []);
+        // Your useEffect logic here
+        // Ensure addAmount is included as a dependency if used inside useEffect
+    }, [addAmount]);
 
     return (
-        <div className="cash-register">
-            <div className="display">
-                <input
-                    type="number"
-                    ref={inputRef}
-                    onChange={handleAmountChange}
-                    placeholder="Enter amount in Rands"
-                    onKeyPress={(e) => {
-                        if (e.key === 'Enter') {
-                            addAmount();
-                        }
-                    }}
-                />
-                <div className="buttons">
-                    <button onClick={addAmount}>Add</button>
-                    <button onClick={deductAmount}>Deduct</button>
-                </div>
-                <h3>Total Amount: {total} Rands</h3>
-                {animationMessage && (
-                    <div className={`animation-message ${animationType}`}>
-                        <img src="robot.png" alt="robot" className="robot" />
-                        <span>{animationMessage}</span>
-                        <div className="star-effect">⭐</div>
-                    </div>
-                )}
-            </div>
+        <div>
+            <h1>Cash Register</h1>
+            <p>Welcome, {userName}</p>
+            <button onClick={() => addAmount(10)}>Add $10</button>
+            <p>Total: ${amount}</p>
         </div>
     );
-}
+};
 
 export default CashRegister;
