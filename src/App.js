@@ -19,7 +19,7 @@ const App = () => {
     }, [transactions]);
 
     const addTransaction = (transaction) => {
-        setTransactions((prevTransactions) => [...prevTransactions, transaction]);
+        setTransactions((prevTransactions) => [...prevTransactions, { ...transaction, user: userName }]);
     };
 
     const handleLogin = (username) => {
@@ -43,7 +43,7 @@ const App = () => {
                     <Route path="/login" element={<Login setLoggedIn={handleLogin} setUserName={setUserName} />} />
                     {loggedIn ? (
                         <>
-                            <Route path="/" element={tab === 'cash_register' ? <CashRegister userName={userName} addTransaction={addTransaction} /> : <TransactionLogs transactions={transactions} userName={userName} />} />
+                            <Route path="/" element={tab === 'cash_register' ? <CashRegister userName={userName} addTransaction={addTransaction} /> : <TransactionLogs transactions={transactions} />} />
                         </>
                     ) : (
                         <Route path="/" element={<Login setLoggedIn={handleLogin} setUserName={setUserName} />} />
