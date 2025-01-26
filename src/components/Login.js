@@ -8,10 +8,10 @@ function Login({ setLoggedIn, setUserName }) {
     const usernameRef = useRef(null);
     const passwordRef = useRef(null);
 
-    const handleLogin = () => {
+    const handleLogin = useCallback(() => {
         setError('');
         // Your login logic here
-    };
+    }, []);
 
     const handleKeyDown = useCallback((event) => {
         if (event.key === 'Enter') {
