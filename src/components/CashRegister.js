@@ -9,7 +9,6 @@ function CashRegister({ userName }) {
     const [animationMessage, setAnimationMessage] = useState('');
     const [animationType, setAnimationType] = useState('');
 
-    // Function Definitions before useEffect
     const addAmount = () => {
         if (amount !== 0) {
             updateTransactions({ amount: parseFloat(amount), type: 'add', user: userName, date: new Date().toISOString() });
@@ -60,7 +59,7 @@ function CashRegister({ userName }) {
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
         };
-    }, [amount, addAmount]); // Include addAmount as a dependency
+    }, [amount, userName]);
 
     useEffect(() => {
         const savedTransactions = JSON.parse(localStorage.getItem('transactions')) || [];
