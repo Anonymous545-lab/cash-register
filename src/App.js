@@ -1,26 +1,36 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import CashRegister from './components/CashRegister';
 import Login from './components/Login';
-import Footer from './components/Footer'; // Import the Footer component
-import './App.css'; // Import the CSS file for your app
+import NavBar from './components/NavBar';
+import TransactionLogs from './components/TransactionLogs';
+import Footer from './components/Footer';
+import './App.css';
 
 const App = () => {
+    const [loggedIn, setLoggedIn] = useState(false);
+    const [userName, setUserName] = useState('');
+    const [tab, setTab] = useState('cash_register');
+
     return (
         <Router>
             <div className="app-container">
-                <Switch>
-                    <Route path="/login">
-                        <Login setLoggedIn={/* your setLoggedIn function */} setUserName={/* your setUserName function */} />
-                    </Route>
-                    <Route path="/">
-                        <CashRegister userName={/* your userName */} />
-                    </Route>
-                </Switch>
-                <Footer /> {/* Include the Footer component */}
+                {loggedIn && <NavBar setTab={setTab} userName={userName} />}
+                <Routes>
+                    <Route path="/login" element={<Login setLoggedIn={setLoggedIn} setUserName={setUserName} />} />
+                    {loggedIn ? (
+                        <>
+                            <Route path="/" element={tab === 'cash_register' ? <CashRegister userName={userName} /> : <TransactionLogs />} />
+                        </>
+                    ) : (
+                        <Route path="/" element={<Login setLoggedIn={setLoggedIn} setUserName={setUserName} />} />
+                    )}
+                </Routes>
+                {loggedIn && <Footer />}
             </div>
         </Router>
     );
 };
 
 export default App;
+
