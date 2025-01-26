@@ -19,7 +19,8 @@ const App = () => {
     }, [transactions]);
 
     const addTransaction = (transaction) => {
-        setTransactions((prevTransactions) => [...prevTransactions, { ...transaction, user: userName }]);
+        const newTransaction = { ...transaction, user: userName, date: new Date().toISOString() };
+        setTransactions((prevTransactions) => [...prevTransactions, newTransaction]);
     };
 
     const handleLogin = (username) => {
