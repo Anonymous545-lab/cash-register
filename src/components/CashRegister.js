@@ -8,7 +8,7 @@ const CashRegister = ({ userName }) => {
     }, []);
 
     useEffect(() => {
-        // Your useEffect logic here
+        // Your useEffect logic here, if needed
     }, [addAmount]);
 
     return (
