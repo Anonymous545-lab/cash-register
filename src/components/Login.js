@@ -8,7 +8,6 @@ function Login({ setLoggedIn, setUserName }) {
     const usernameRef = useRef(null);
     const passwordRef = useRef(null);
 
-    // Function Definitions before useEffect
     const handleLogin = () => {
         setError('');
 
@@ -51,7 +50,7 @@ function Login({ setLoggedIn, setUserName }) {
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
         };
-    }, [username, password, handleLogin]); // Include handleLogin as a dependency
+    }, [username, password]);
 
     return (
         <div className="login-container">
