@@ -28,7 +28,7 @@ function CashRegister({ userName }) {
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
         };
-    }, [amount]);
+    }, [amount, addAmount]); // Include addAmount as a dependency
 
     const addAmount = () => {
         if (amount !== 0) {
