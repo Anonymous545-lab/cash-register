@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import './CashRegister.css';
-import './Animations.css'; // Import the animations CSS
+import './CashRegister.css'; // Import the combined CSS
 
 const CashRegister = ({ userName, addTransaction }) => {
     const [amount, setAmount] = useState(() => parseFloat(localStorage.getItem('totalAmount')) || 0);
