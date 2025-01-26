@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 const CashRegister = ({ userName }) => {
     const [amount, setAmount] = useState(0);
 
-    const addAmount = (value) => {
-        setAmount(amount + value);
-    };
+    const addAmount = useCallback((value) => {
+        setAmount((prevAmount) => prevAmount + value);
+    }, []);
 
     useEffect(() => {
         // Your useEffect logic here
-        // Ensure addAmount is included as a dependency if used inside useEffect
     }, [addAmount]);
 
     return (
