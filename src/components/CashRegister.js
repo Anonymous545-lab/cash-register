@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './CashRegister.css';
+import './Animations.css'; // Import the animations CSS
 
 const CashRegister = ({ userName, addTransaction }) => {
     const [amount, setAmount] = useState(() => parseFloat(localStorage.getItem('totalAmount')) || 0);
     const [inputAmount, setInputAmount] = useState('');
+    const [showThankYou, setShowThankYou] = useState(false);
+    const [showAmountDeducted, setShowAmountDeducted] = useState(false);
 
     const handleInputChange = (event) => {
         setInputAmount(event.target.value);
@@ -15,6 +18,8 @@ const CashRegister = ({ userName, addTransaction }) => {
             setAmount((prevAmount) => prevAmount + amountValue);
             addTransaction({ type: 'add', amount: amountValue, date: new Date(), user: userName });
             setInputAmount(''); // Clear input field after adding
+            setShowThankYou(true); // Show "Thank you!" animation
+            setTimeout(() => setShowThankYou(false), 3000); // Hide after 3 seconds
         }
     }, [addTransaction, userName]);
 
@@ -24,6 +29,8 @@ const CashRegister = ({ userName, addTransaction }) => {
             setAmount((prevAmount) => prevAmount - amountValue);
             addTransaction({ type: 'deduct', amount: amountValue, date: new Date(), user: userName });
             setInputAmount(''); // Clear input field after deducting
+            setShowAmountDeducted(true); // Show "Amount Deducted!" animation
+            setTimeout(() => setShowAmountDeducted(false), 3000); // Hide after 3 seconds
         }
     }, [addTransaction, userName]);
 
@@ -35,7 +42,7 @@ const CashRegister = ({ userName, addTransaction }) => {
         <div className="cash-register">
             <div className="display">
                 <h1>Cash Register</h1>
-                <p>Welcome, {userName}</p>
+                <p>{userName}</p>
                 <input
                     type="number"
                     value={inputAmount}
@@ -48,6 +55,8 @@ const CashRegister = ({ userName, addTransaction }) => {
                 </div>
                 <p>Total: R{amount}</p>
             </div>
+            {showThankYou && <div className="thank-you show">Thank you!</div>}
+            {showAmountDeducted && <div className="amount-deducted show">Amount Deducted!</div>}
         </div>
     );
 };
